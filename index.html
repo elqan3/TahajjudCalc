@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حساب الثلث الأخير من الليل</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1 id="title">حساب الثلث الأخير من الليل</h1>
+
+    <label id="labelMaghrib" for="maghrib">وقت المغرب:</label>
+    <input type="time" id="maghrib" required>
+
+    <label id="labelFajr" for="fajr">وقت الفجر:</label>
+    <input type="time" id="fajr" required>
+
+    <button id="calculateButton" onclick="calculateLastThird()">احسب الثلث الأخير</button>
+
+    <p id="result"></p>
+
+    <button id="toggleLanguage" onclick="toggleLanguage()">English</button>
+
+    <footer>
+        <p>© 2025 Adeem Elqantri. جميع الحقوق محفوظة.</p>
+        <p>تواصل معي عبر <a href="https://wa.me/218926410278" target="_blank">واتساب</a></p>
+        <p>+218926410278</p>
+    </footer>
+    
+    <script src="script.js"></script>
+</body>
+</html>
