@@ -5,7 +5,7 @@ const translations = {
         labelFajr: "وقت الفجر:",
         calculateButton: "احسب الثلث الأخير",
         toggleLanguage: "English",
-        resultText: "يبدأ الثلث الأخير من الليل عند:"
+        resultText: "يبدأ الثلث الأخير من الليل عند:" 
     },
     en: {
         title: "Calculate the Last Third of the Night",
@@ -13,45 +13,33 @@ const translations = {
         labelFajr: "Fajr Time:",
         calculateButton: "Calculate Last Third",
         toggleLanguage: "العربية",
-        resultText: "The last third of the night starts at:"
+        resultText: "The last third of the night starts at:" 
     }
 };
 
-// اللغة الافتراضية
 let currentLang = "ar";
 
-// تغيير اللغة
 function toggleLanguage() {
     currentLang = currentLang === "ar" ? "en" : "ar";
     updateLanguage();
+    resetInputs();
 }
 
-// تحديث النصوص والاتجاه
 function updateLanguage() {
     document.getElementById("title").innerText = translations[currentLang].title;
     document.getElementById("labelMaghrib").innerText = translations[currentLang].labelMaghrib;
     document.getElementById("labelFajr").innerText = translations[currentLang].labelFajr;
     document.getElementById("calculateButton").innerText = translations[currentLang].calculateButton;
     document.getElementById("toggleLanguage").innerText = translations[currentLang].toggleLanguage;
-
-    // تغيير اتجاه النص حسب اللغة
     document.body.className = currentLang;
-
-    // ضبط لغة إدخال الوقت
     let timeInputs = document.querySelectorAll("input[type='time']");
     timeInputs.forEach(input => {
-        if (currentLang === "en") {
-            input.setAttribute("lang", "en");
-            input.setAttribute("dir", "ltr");
-            input.setAttribute("step", "60"); // منع إدخال الثواني
-        } else {
-            input.setAttribute("lang", "ar");
-            input.setAttribute("dir", "rtl");
-        }
+        input.setAttribute("lang", currentLang);
+        input.setAttribute("dir", currentLang === "en" ? "ltr" : "rtl");
+        input.setAttribute("step", "60");
     });
 }
 
-// حساب وقت الثلث الأخير
 function calculateLastThird() {
     let maghribTime = document.getElementById("maghrib").value;
     let fajrTime = document.getElementById("fajr").value;
@@ -77,19 +65,25 @@ function calculateLastThird() {
     let nightDuration = (fajrDate - maghribDate) / 3;
     let lastThirdTime = new Date(fajrDate - nightDuration);
 
-    let resultText = translations[currentLang].resultText + ` ${formatTime(lastThirdTime)}`;
-    document.getElementById("result").innerText = resultText;
+    document.getElementById("result").innerText = translations[currentLang].resultText + ` ${formatTime(lastThirdTime)}`;
 }
 
-// تنسيق الوقت حسب اللغة
 function formatTime(date) {
-    if (currentLang === "en") {
-        let hours = date.getHours();
-        let minutes = ("0" + date.getMinutes()).slice(-2);
-        let ampm = hours >= 12 ? "PM" : "AM";
-        hours = hours % 12 || 12; // تحويل 0 إلى 12
-        return `${hours}:${minutes} ${ampm}`;
-    } else {
-        return `${date.getHours()}:${("0" + date.getMinutes()).slice(-2)}`;
+    let hours = date.getHours();
+    let minutes = ("0" + date.getMinutes()).slice(-2);
+    let ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12 || 12; 
+    let formattedTime = `${hours}:${minutes} ${ampm}`;
+    
+    if (currentLang === "ar") {
+        ampm = ampm === "AM" ? "صباحًا" : "مساءً";
+        formattedTime = `${hours}:${minutes} ${ampm}`;
     }
+    return formattedTime;
+}
+
+function resetInputs() {
+    document.getElementById("maghrib").value = "";
+    document.getElementById("fajr").value = "";
+    document.getElementById("result").innerText = "";
 }
